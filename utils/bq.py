@@ -1,6 +1,7 @@
 """BigQuery client e operacoes CRUD para o admin app."""
 
-import os
+import json
+import base64
 from pathlib import Path
 import pandas as pd
 import streamlit as st
@@ -14,21 +15,17 @@ KEY_PATH = Path(__file__).resolve().parents[1] / "credentials" / "gcp-key.json"
 
 @st.cache_resource(show_spinner=False)
 def get_client() -> bigquery.Client:
+    # Local: usa o arquivo gcp-key.json
     if KEY_PATH.exists():
         creds = service_account.Credentials.from_service_account_file(str(KEY_PATH))
         return bigquery.Client(project=PROJECT, credentials=creds)
-    # Streamlit Cloud: usa st.secrets
-    if "gcp" not in st.secrets:
-        st.error("Credenciais GCP nao configuradas. Acesse Manage App > Settings > Secrets e adicione a secao [gcp].")
-        st.stop()
-    gcp_info = dict(st.secrets["gcp"])
-    # Normaliza private_key: converte \n literais e remove espaços extras
-    if "private_key" in gcp_info:
-        pk = gcp_info["private_key"]
-        pk = pk.replace("\\n", "\n").strip()
-        gcp_info["private_key"] = pk
-    creds = service_account.Credentials.from_service_account_info(gcp_info)
-    return bigquery.Client(project=PROJECT, credentials=creds)
+    # Streamlit Cloud: JSON em base64 — imune a problemas de escape TOML
+    if "gcp_key_b64" in st.secrets:
+        key_json = json.loads(base64.b64decode(st.secrets["gcp_key_b64"]).decode())
+        creds = service_account.Credentials.from_service_account_info(key_json)
+        return bigquery.Client(project=PROJECT, credentials=creds)
+    st.error("Credenciais GCP nao configuradas. Acesse Manage App > Settings > Secrets e adicione gcp_key_b64.")
+    st.stop()
 
 
 def read_table(table: str, order_by: str = None, limit: int = 5000) -> pd.DataFrame:
