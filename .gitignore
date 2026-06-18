@@ -1,0 +1,47 @@
+# Credenciais — NUNCA versionar
+credentials/
+*.json
+
+# Secrets do Streamlit (usa painel cloud em producao)
+.streamlit/secrets.toml
+
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs e temporarios
+*.log
+*.tmp
+
+# Arquivos de dados — nao versionar no repo do app
+*.xlsx
+*.parquet
+*.csv
+*.png
+
+# Arquivos de texto temporarios (exceto requirements.txt)
+continua.txt
+resumo_powerbi.txt
+
+# Scripts de analise Power BI / utilitarios do projeto (nao sao parte do app)
+pbix_extraido/
+analisar_pbix.py
+auditoria_schema.py
+classificar_tipos.py
+extrair_*.py
+normalizar_bigquery.py
+upload_apoio.py
+config.py

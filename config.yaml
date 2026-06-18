@@ -1,0 +1,18 @@
+credentials:
+  usernames:
+    admin:
+      email: dlogexpress@gmail.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Administrador
+      password: '$2b$12$si2/Q/0yNyTx5/8BVbDT/u2DU.uaR9qYh86hoerErTkKj5VtLVLz.'
+      role: admin
+
+cookie:
+  expiry_days: 30
+  key: dominalog_secret_key_v2_2025
+  name: dominalog_admin_v2
+
+pre-authorized:
+  emails:
+  - dlogexpress@gmail.com
