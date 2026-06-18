@@ -22,9 +22,11 @@ def get_client() -> bigquery.Client:
         st.error("Credenciais GCP nao configuradas. Acesse Manage App > Settings > Secrets e adicione a secao [gcp].")
         st.stop()
     gcp_info = dict(st.secrets["gcp"])
-    # Garante que private_key tem quebras de linha reais
+    # Normaliza private_key: converte \n literais e remove espaços extras
     if "private_key" in gcp_info:
-        gcp_info["private_key"] = gcp_info["private_key"].replace("\\n", "\n")
+        pk = gcp_info["private_key"]
+        pk = pk.replace("\\n", "\n").strip()
+        gcp_info["private_key"] = pk
     creds = service_account.Credentials.from_service_account_info(gcp_info)
     return bigquery.Client(project=PROJECT, credentials=creds)
 
