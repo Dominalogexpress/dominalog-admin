@@ -112,6 +112,22 @@ def delete_row(table: str, where: dict) -> bool:
         return False
 
 
+def append_dataframe(table: str, df: pd.DataFrame) -> bool:
+    """Adiciona linhas ao final da tabela (WRITE_APPEND)."""
+    client = get_client()
+    table_id = f"{PROJECT}.{DATASET}.{table}"
+    job_config = bigquery.LoadJobConfig(
+        write_disposition="WRITE_APPEND",
+        autodetect=True,
+    )
+    try:
+        client.load_table_from_dataframe(df, table_id, job_config=job_config).result()
+        return True
+    except Exception as e:
+        st.error(f"Erro ao inserir linhas: {e}")
+        return False
+
+
 def upsert_dataframe(table: str, df: pd.DataFrame) -> bool:
     """Substitui a tabela inteira pelo dataframe (WRITE_TRUNCATE)."""
     client = get_client()
