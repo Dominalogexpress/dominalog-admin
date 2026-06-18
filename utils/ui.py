@@ -22,15 +22,48 @@ LOGO = """
 
 CSS = """
 <style>
-    /* Sidebar */
+    /* Sidebar — fundo navy */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0A2342 0%, #0d2d52 100%);
     }
+
+    /* Textos gerais do sidebar */
     [data-testid="stSidebar"] .stMarkdown p,
     [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stRadio label {
+    [data-testid="stSidebar"] .stRadio label,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] p {
         color: #ffffff !important;
     }
+
+    /* Links de navegacao das paginas */
+    [data-testid="stSidebarNav"] a,
+    [data-testid="stSidebarNavLink"],
+    [data-testid="stSidebarNavLink"] span,
+    [data-testid="stSidebarNavLink"] p {
+        color: #ffffff !important;
+        text-decoration: none !important;
+    }
+    [data-testid="stSidebarNavLink"]:hover {
+        background-color: rgba(255, 107, 0, 0.15) !important;
+        border-radius: 6px;
+    }
+    [data-testid="stSidebarNavLink"]:hover span,
+    [data-testid="stSidebarNavLink"]:hover p {
+        color: #FF6B00 !important;
+    }
+    /* Pagina ativa */
+    [data-testid="stSidebarNavLink"][aria-current="page"],
+    [data-testid="stSidebarNavLinkContainer"] [aria-current="page"] {
+        background-color: rgba(255, 107, 0, 0.2) !important;
+        border-left: 3px solid #FF6B00 !important;
+        border-radius: 6px;
+    }
+    [data-testid="stSidebarNavLink"][aria-current="page"] span {
+        color: #FF6B00 !important;
+        font-weight: 600 !important;
+    }
+
     [data-testid="stSidebar"] hr { border-color: #ffffff30; }
 
     /* Metric cards */
