@@ -18,9 +18,14 @@ def get_client() -> bigquery.Client:
         creds = service_account.Credentials.from_service_account_file(str(KEY_PATH))
         return bigquery.Client(project=PROJECT, credentials=creds)
     # Streamlit Cloud: usa st.secrets
-    creds = service_account.Credentials.from_service_account_info(
-        dict(st.secrets["gcp"])
-    )
+    if "gcp" not in st.secrets:
+        st.error("Credenciais GCP nao configuradas. Acesse Manage App > Settings > Secrets e adicione a secao [gcp].")
+        st.stop()
+    gcp_info = dict(st.secrets["gcp"])
+    # Garante que private_key tem quebras de linha reais
+    if "private_key" in gcp_info:
+        gcp_info["private_key"] = gcp_info["private_key"].replace("\\n", "\n")
+    creds = service_account.Credentials.from_service_account_info(gcp_info)
     return bigquery.Client(project=PROJECT, credentials=creds)
 
 
